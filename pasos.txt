@@ -1,0 +1,9 @@
+1- instalar docker
+2- instalar cassandra con el siguiente comando= docker run --name cassandra --hostname cassandra --network cassandra -p 9042:9042 -d cassandra:latest
+3- ingresa a partir de un terminal cmd, e inserta el siguiente contacto para ingresar a la consola del cassandra: docker run --rm -it --network cassandra nuvo/docker-cqlsh cqlsh cassandra 9042 --cqlversion='3.4.6'
+4- crea un keyspace con el siguiente comando: CREATE KEYSPACE IF NOT EXISTS agenda WITH REPLICATION={'class': 'SimpleStrategy','replication_factor':'1'};
+5- crea una tabla con el siguiente comando: CREATE TABLE IF NOT EXISTS agenda.contactos ( contactoid text PRIMARY KEY, contactonombre text , contactotelefono text, createdat timestamp);
+6- inserta algunos valores con el siguiente comando:
+INSERT INTO agenda.contactos ( contactoid, contactonombre, contactotelefono, createdat) VALUES ('123', 'JUAN PÉREZ', '+595983658985', toTimeStamp(now()));
+INSERT INTO agenda.contactos ( contactoid, contactonombre, contactotelefono, createdat) VALUES ('4123', 'CAPONE', '+595983423985', toTimeStamp(now()));
+7- lee los datos de la tabla agenda.contactos con el siguiente comando: SELECT * FROM agenda.contactos;
