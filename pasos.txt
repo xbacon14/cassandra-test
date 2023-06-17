@@ -1,9 +1,10 @@
 1- instalar docker
-2- instalar cassandra con el siguiente comando= docker run --name cassandra --hostname cassandra --network cassandra -p 9042:9042 -d cassandra:latest
-3- ingresa a partir de un terminal cmd, e inserta el siguiente contacto para ingresar a la consola del cassandra: docker run --rm -it --network cassandra nuvo/docker-cqlsh cqlsh cassandra 9042 --cqlversion='3.4.6'
-4- crea un keyspace con el siguiente comando: CREATE KEYSPACE IF NOT EXISTS agenda WITH REPLICATION={'class': 'SimpleStrategy','replication_factor':'1'};
-5- crea una tabla con el siguiente comando: CREATE TABLE IF NOT EXISTS agenda.contactos ( contactoid text PRIMARY KEY, contactonombre text , contactotelefono text, createdat timestamp);
-6- inserta algunos valores con el siguiente comando:
-INSERT INTO agenda.contactos ( contactoid, contactonombre, contactotelefono, createdat) VALUES ('123', 'JUAN PÉREZ', '+595983658985', toTimeStamp(now()));
-INSERT INTO agenda.contactos ( contactoid, contactonombre, contactotelefono, createdat) VALUES ('4123', 'CAPONE', '+595983423985', toTimeStamp(now()));
-7- lee los datos de la tabla agenda.contactos con el siguiente comando: SELECT * FROM agenda.contactos;
+2- ejecutar en un terminal de comandos los siguientes comandos en orden:
+    *- docker run --name cassandra-1 -d --network cassandra-network cassandra:4.1
+    *- docker run --name cassandra-2 -d --network cassandra-network cassandra:4.1
+    *- docker run --name cassandra-3 -d --network cassandra-network cassandra:4.1
+
+* Este comando crea 3 instancias de cassandra, linkeadas a la primera, para poder linkear los nodos de cada una de las instancias *
+3- visualizar si los nodos fueron levantados correctamente con el siguiente comando: docker exec -i -t cassandra-1 bash -c 'nodetool status'
+4- si figuran que las 3 instancias ya estan levantadas, ejecutar el siguiente comando para ingresar a la consola del cassandra : docker exec -it cassandra-1 bash -c 'cqlsh'
+5- a partir de ahí, ejecutar los pasos del archivo datos.cql, en orden, para crear la keyspace, la tabla, e insertar los datos
